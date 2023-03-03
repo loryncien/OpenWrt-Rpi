@@ -78,7 +78,7 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRT_ROOT_PATH/.config
           echo -e "\nCONFIG_ALL=y" >> $OPENWRT_ROOT_PATH/.config
           echo -e "\nCONFIG_ALL_NONSHARED=y" >> $OPENWRT_ROOT_PATH/.config
-          [ -n "$KERNEL_PATCHVER" ] && sed -i "/KERNEL_PATCHVER/c KERNEL_PATCHVER:=$KERNEL_PATCHVER" target/linux/x86/Makefile
+          [ -n "$KERNEL_PATCHVER" ] && sed -i "/KERNEL_PATCHVER/c KERNEL_PATCHVER:=$KERNEL_PATCHVER" $OPENWRT_ROOT_PATH/target/linux/x86/Makefile
           cd $OPENWRT_ROOT_PATH
           make defconfig > /dev/null 2>&1
 
