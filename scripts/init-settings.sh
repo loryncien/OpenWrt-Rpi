@@ -27,21 +27,14 @@ uci set fstab.@global[0].check_fs=1
 
 # Disable IPv6 DHCP, ULA
 uci -q delete dhcp.lan.ra
-uci -q delete dhcp.lan.dhcpv6
 uci -q delete dhcp.lan.ra_management
+uci -q delete dhcp.lan.dhcpv6
 # Disable IPV6 ula prefix
-# sed -i 's/^[^#].*option ula/#&/' /etc/config/network
-uci -q delete network.globals
+uci -q delete network.globals.ula_prefix
 uci -q delete network.wan6
 
 # disable IPV6 DNS
 uci set "dhcp.@dnsmasq[0].filter_aaaa=1"
-
-if [ $(uname -m) = "aarch64" ]; then
-# CPU Performance
-uci set cpufreq.cpufreq.governor0='performance'
-uci set cpufreq.cpufreq.governor4='performance'
-fi
 
 # 启动本地内核
 sed -i '/core/c src/gz openwrt_core file:///www/snapshots/targets/x86/64/packages' /etc/opkg/distfeeds.conf
