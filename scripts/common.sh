@@ -14,7 +14,11 @@ git clone --depth=1 https://github.com/TioaChan/luci-app-adguardhome
 
 # luci-app-unblockneteasemusic
 find .. -maxdepth 4 -iname "*unblock*music*" -type d | xargs rm -rf
-git clone --depth=1 https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
+if [ $SOURCE_BRANCH = "openwrt-21.02" ]; then
+  git clone --depth=1 https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
+else 
+  git clone --depth=1 -b master https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
+fi
 # uclient-fetch Use IPv4 only
 sed -i 's/uclient-fetch/uclient-fetch -4/g' luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic/update.sh
 
