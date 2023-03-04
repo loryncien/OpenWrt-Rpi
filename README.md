@@ -1,3 +1,4 @@
+fork [@SuLingGG](https://github.com/SuLingGG/OpenWrt-Rpi) 只保留x86平台
 # [OpenWrt-Rpi](https://github.com/SuLingGG/OpenWrt-Rpi)
 
 ## 项目介绍
