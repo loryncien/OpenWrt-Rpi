@@ -445,7 +445,7 @@ jobs:
         uses: actions/upload-artifact@main
         if: env.FIRMWARE_UPLOAD == 'true' && !cancelled()
         with:
-          name: OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-firmware-${{ env.DATE }}
+          name: OpenWrt-${{ env.DEVICE_TARGET }}_${{ env.DEVICE_SUBTARGET }}-firmware-${{ env.DATE }}
           path: ${{ env.FIRMWARE }}
 
       - name: Upload firmware to release
@@ -480,7 +480,7 @@ jobs:
           key: ${{ secrets.BARKKEY }}   # Your secret key, it is required
           host: ${{ secrets.HOST }}     # Your Bark host, the default is 'https://api.day.app' ${{ secrets.HOST }}
           title: OpenWrt 固件编译完成！
-          body: OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.KERNEL_VERSION }}-Lite${{ env.DATE }}
+          body: OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}_${{ env.KERNEL_VERSION }}-lite-${{ env.DATE }}
           sound: fanfare
           isArchive: 1
           # url: https://yuanhaoji.com
