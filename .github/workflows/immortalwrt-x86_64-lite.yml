@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build-immortalwrt-x86_64
+name: Build-immortalwrt-x86_64-lite
 
 on:
   workflow_dispatch:
@@ -299,7 +299,7 @@ jobs:
         run: |
           [ -e files ] && mv files $OPENWRT_ROOT_PATH/files
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRT_ROOT_PATH/.config
-          # cat config/general-packages.config >> $OPENWRT_ROOT_PATH/.config
+          cat config/general-packages.config >> $OPENWRT_ROOT_PATH/.config
           # cat config/extra-drivers.config >> $OPENWRT_ROOT_PATH/.config
           cd $OPENWRT_ROOT_PATH
           chmod +x $GITHUB_WORKSPACE/scripts/*.sh
@@ -307,6 +307,8 @@ jobs:
           $GITHUB_WORKSPACE/$DIY_SH
           $GITHUB_WORKSPACE/scripts/preset-clash-core.sh $CLASH_BINARY_PLATFORM
           # $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
       - name: Switch kernel environment
         run: |
@@ -346,7 +348,6 @@ jobs:
             mkdir -p $OPENWRT_ROOT_PATH/files/etc/opkg
             cd $OPENWRT_ROOT_PATH/files/etc/opkg
             cp $GITHUB_WORKSPACE/data/opkg/distfeeds.conf .
-            cp -rf $GITHUB_WORKSPACE/data/etc/* $OPENWRT_ROOT_PATH/files/etc/
             sed -i "s/DEVICE_SUBTARGET/$DEVICE_SUBTARGET/g" distfeeds.conf
             sed -i "s/DEVICE_TARGET/$DEVICE_TARGET/g" distfeeds.conf
             sed -i "s/DEVICE_PLATFORM/$DEVICE_PLATFORM/g" distfeeds.conf
@@ -418,7 +419,7 @@ jobs:
         if: steps.environment.outputs.status == 'success' && !cancelled()
         with:
           type: tar
-          path: kernel/
+          path: packages/
           directory: ${{ env.UPLOAD_PATH }}/
           filename: ${{ env.UPLOAD_PATH }}/OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-kernel-packages.tar.gz
           
@@ -433,7 +434,7 @@ jobs:
 
       - name: Organize files
         id: organize
-        if: (!cancelled())
+        if: env.FIRMWARE_UPLOAD == 'true' && !cancelled()
         run: |
           cd $OPENWRT_ROOT_PATH/bin/targets/*/*
           rm -rf packages
@@ -442,9 +443,9 @@ jobs:
       
       - name: Upload firmware directory
         uses: actions/upload-artifact@main
-        if: env.FIRMWARE_UPLOAD == 'true' && !cancelled()
+        if:  steps.organize.outputs.status == 'success'  && !cancelled()
         with:
-          name: OpenWrt-${{ env.DEVICE_TARGET }}_${{ env.DEVICE_SUBTARGET }}-firmware-${{ env.DATE }}
+          name: OpenWrt-${{ env.DEVICE_TARGET }}_${{ env.DEVICE_SUBTARGET }}-firmware
           path: ${{ env.FIRMWARE }}
 
       - name: Upload firmware to release
@@ -479,10 +480,9 @@ jobs:
           key: ${{ secrets.BARKKEY }}   # Your secret key, it is required
           host: ${{ secrets.HOST }}     # Your Bark host, the default is 'https://api.day.app' ${{ secrets.HOST }}
           title: OpenWrt 固件编译完成！
-          body: OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}_${{ env.KERNEL_VERSION }}-lite-${{ env.DATE }}
+          body: OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}_${{ env.KERNEL_VERSION }}-lite
           sound: fanfare
           isArchive: 1
           # url: https://yuanhaoji.com
           # automaticallyCopy: 1
           # copy: Content copied to clipboard
-
