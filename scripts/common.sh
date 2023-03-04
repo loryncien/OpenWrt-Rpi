@@ -82,11 +82,19 @@ git clone https://github.com/AlexZhuo/luci-app-bandwidthd.git
 # Add Theme
 # luci-theme-design theme
 rm -rf ../feeds/luci/themes/luci-theme-design
-git clone --depth=1 https://github.com/gngpp/luci-theme-design.git
+if [ $SOURCE_BRANCH = "openwrt-21.02" ]; then
+  git clone --depth=1 -b js https://github.com/gngpp/luci-theme-design.git
+else 
+  git clone --depth=1 https://github.com/gngpp/luci-theme-design.git
+fi
 # jerrykuku Argon theme
-git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
-git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
 rm -rf ../feeds/luci/themes/luci-theme-argon
+if [ $SOURCE_BRANCH = "openwrt-21.02" ]; then
+  git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon
+else 
+  git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
+fi
+git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
 sed -i '/letter-spacing: 1px/{N;s#text-transform: uppercase#text-transform: none#}' luci-theme-argon/htdocs/luci-static/argon/css/cascade.css
 popd
 
