@@ -461,7 +461,7 @@ jobs:
           key: ${{ secrets.BARKKEY }}   # Your secret key, it is required
           host: ${{ secrets.HOST }}     # Your Bark host, the default is 'https://api.day.app' ${{ secrets.HOST }}
           title: OpenWrt 固件编译完成！
-          body: OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}_${{ env.KERNEL_VERSION }}-lite
+          body: OpenWrt-${{ env.DEVICE_TARGET }}_${{ env.DEVICE_SUBTARGET }}-${{ env.KERNEL_VERSION }}-lite
           sound: fanfare
           isArchive: 1
           # url: https://yuanhaoji.com
