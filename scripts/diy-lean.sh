@@ -8,6 +8,6 @@ pushd package/lean/default-settings/files
 # 设置密码为空
 sed -i 's@.*CYXluq4wUazHjmCDBCqXF*@#&@g' zzz-default-settings
 # 版本号里显示一个自己的名字
-export date_version=$(date +'%Y.%m.%d')
-sed -ri "s#(R[0-9].*[0-9])#\1 Build ${date_version} By Cheng #g" zzz-default-settings
+export date_version=$(TZ=UTC-8 date +'%Y.%m.%d')
+sed -ri "s#(R[0-9].*[0-9])#\1 (By @Cheng build ${date_version}) #g" zzz-default-settings
 popd
