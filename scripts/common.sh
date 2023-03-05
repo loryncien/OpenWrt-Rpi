@@ -126,6 +126,9 @@ sed -i 's/ImmortalWrt/OpenWrt/g' package/base-files/files/bin/config_generate
 export DATE_VERSION=$(date -d "$(rdate -n -4 -p pool.ntp.org)" +'%Y-%m-%d')
 sed -i "s/%C/%C (${DATE_VERSION})/g" package/base-files/files/etc/openwrt_release
 
+# 修改欢迎banner
+cp -f $GITHUB_WORKSPACE/data/banner package/base-files/files/etc/banner
+
 # samba解除root限制
 sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.template
 
