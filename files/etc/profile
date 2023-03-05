@@ -83,11 +83,11 @@ if ( grep -qs '^root::' /etc/shadow && \
      [ -z "$FAILSAFE" ] )
 then
 cat << EOF
-==== WARNING! ====================================
-There is no root password defined on this device!
-Use the "passwd" command to set up a new password
-in order to prevent unauthorized SSH logins.
---------------------------------------------------
+ ==== WARNING! ====================================
+ There is no root password defined on this device!
+ Use the "passwd" command to set up a new password
+ in order to prevent unauthorized SSH logins.
+ --------------------------------------------------
 EOF
 fi
 
@@ -111,7 +111,7 @@ alias lc='lt -c'          # long format, newest status change (ctime) last
 alias dh='df -h'
 alias ramfree='sync && echo 3 > /proc/sys/vm/drop_caches'
 lan() {
-    uci set network.lan.ipaddr="$@" && ifup lan
+    [[ -n ${1} ]] && uci set network.lan.ipaddr="${1}" && ifup lan
 }
 mkcd() {
     [[ -n ${1} ]] && mkdir -p ${1} && cd ${1}
