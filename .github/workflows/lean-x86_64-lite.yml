@@ -330,6 +330,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
 
       - name: Compile Packages
+        id: compile
         run: |
           cd $OPENWRT_ROOT_PATH
           echo -e "$(nproc) thread compile"
@@ -339,9 +340,11 @@ jobs:
           yes n | make target/compile -j1 V=s IGNORE_ERRORS=1
           make package/compile -j$(nproc) IGNORE_ERRORS=1 || make package/compile -j1 V=s IGNORE_ERRORS=1
           make package/index
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: Generate Firmware
         id: generate
+        if: steps.compile.outputs.status == 'success'
         run: |
           cd $OPENWRT_ROOT_PATH
           mkdir -p files/etc/uci-defaults/
@@ -397,7 +400,7 @@ jobs:
 
       - name: Compressed kernel packages
         uses: thedoctor0/zip-release@master
-        if: steps.environment.outputs.status == 'success' && !cancelled()
+        if: steps.generate.outputs.status == 'success' && steps.environment.outputs.status == 'success' && !cancelled()
         with:
           type: tar
           path: packages/
@@ -406,7 +409,7 @@ jobs:
           
       - name: Compressed firmware packages
         uses: thedoctor0/zip-release@master
-        if: steps.environment.outputs.status == 'success' && !cancelled()
+        if: steps.generate.outputs.status == 'success' && steps.environment.outputs.status == 'success' && !cancelled()
         with:
           type: tar
           path: packages/
@@ -455,7 +458,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Push notification ++
-        if: env.SEND_BARK_MSG == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+        if: env.SEND_BARK_MSG == 'true' && steps.generate.outputs.status == 'success' && !cancelled()
         uses: shink/bark-action@v2
         with:
           key: ${{ secrets.BARKKEY }}   # Your secret key, it is required
