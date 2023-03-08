@@ -34,7 +34,11 @@ uci -q delete network.globals.ula_prefix
 uci -q delete network.wan6
 
 # disable IPV6 DNS
-uci set "dhcp.@dnsmasq[0].filter_aaaa=1"
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+uci set dhcp.@dnsmasq[0].rebind_protection='1'
+uci set dhcp.@dnsmasq[0].rebind_localhost='1'
+
+uci commit
 
 # 启动本地内核
 sed -i '/core/c src/gz openwrt_core file:///www/snapshots/targets/x86/64/packages' /etc/opkg/distfeeds.conf
