@@ -7,20 +7,27 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall passwall
 git clone --depth=1 -b luci https://github.com/xiaorouji/openwrt-passwall luci-app-passwall
 svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
 
+# luci-app-unblockneteasemusic
+if [ -d "../feeds/luci/applications/luci-app-unblockneteasemusic" ]; then
+  pushd ../feeds/luci/applications/luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic
+  # uclient-fetch Use IPv4 only
+  sed -i 's/uclient-fetch/uclient-fetch -4/g' update.sh
+  # unblockneteasemusic core
+  mkdir -p core
+  curl 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' -o commits.json
+  echo "$(grep sha commits.json | sed -n "1,1p" | cut -c 13-52)" > core_local_ver
+  curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/precompiled/app.js -o core/app.js
+  curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/precompiled/bridge.js -o core/bridge.js
+  curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/ca.crt -o core/ca.crt
+  curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.crt -o core/server.crt
+  curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.key -o core/server.key
+  popd
+fi
+
 # luci-app-adguardhome
 rm -rf ../feeds/luci/applications/luci-app-adguardhome
 git clone --depth=1 https://github.com/TioaChan/luci-app-adguardhome
 #https://github.com/rufengsuixing/AdGuardHome
-
-# luci-app-unblockneteasemusic
-find .. -maxdepth 4 -iname "*unblock*music*" -type d | xargs rm -rf
-if [ $SOURCE_BRANCH = "openwrt-21.02" ]; then
-  git clone --depth=1 https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
-else 
-  git clone --depth=1 -b master https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
-fi
-# uclient-fetch Use IPv4 only
-sed -i 's/uclient-fetch/uclient-fetch -4/g' luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic/update.sh
 
 # luci-app-mosdns
 # drop mosdns and v2ray-geodata packages that come with the source
@@ -32,8 +39,8 @@ git clone --depth=1 https://github.com/sbwml/v2ray-geodata.git v2ray-geodata
 
 # luci-app-netdata
 #find .. -maxdepth 4 -iname "*netdata" -type d | xargs rm -rf
-git clone --depth=1 https://github.com/sirpdboy/luci-app-netdata
 rm -rf ../feeds/luci/applications/luci-app-netdata
+git clone --depth=1 https://github.com/sirpdboy/luci-app-netdata
 
 # luci-app-ddns-go
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git
@@ -54,7 +61,7 @@ svn co https://github.com/linkease/nas-packages/trunk/network/services/ddnsto
 svn co https://github.com/linkease/nas-packages-luci/trunk/luci/luci-app-ddnsto
 
 # luci-app-eqos
-find .. -maxdepth 4 -iname "*eqos" -type d | xargs rm -rf
+#rm -rf ../feeds/luci/applications/luci-app-eqos
 svn co https://github.com/kiddin9/openwrt-packages/trunk/luci-app-eqos
 
 #find .. -maxdepth 4 -iname "*serverchan" -type d | xargs rm -rf
@@ -65,16 +72,13 @@ svn co https://github.com/kiddin9/openwrt-packages/trunk/luci-app-eqos
 find . -maxdepth 4 -iname "*autotimeset" -type d | xargs rm -rf
 git clone --depth=1 https://github.com/sirpdboy/luci-app-autotimeset.git
 
-find .. -maxdepth 4 -iname "miniupnpd" -type d | xargs rm -rf
-svn co https://github.com/coolsnowwolf/packages/trunk/net/miniupnpd miniupnpd
-
 # OpenAppFilter
 git clone --depth=1 https://github.com/destan19/OpenAppFilter.git
 
 # aliyundrive-webdav
-svn export https://github.com/messense/aliyundrive-webdav/trunk/openwrt aliyundrive
 rm -rf ../feeds/luci/applications/luci-app-aliyundrive-webdav
 rm -rf ../feeds/packages/multimedia/aliyundrive-webdav
+svn export https://github.com/messense/aliyundrive-webdav/trunk/openwrt aliyundrive
 
 # luci-app-bandwidthd
 git clone https://github.com/AlexZhuo/luci-app-bandwidthd.git
@@ -98,21 +102,10 @@ git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
 sed -i '/letter-spacing: 1px/{N;s#text-transform: uppercase#text-transform: none#}' luci-theme-argon/htdocs/luci-static/argon/css/cascade.css
 popd
 
-# unblockneteasemusic core
-NAME=$"package/luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic" && mkdir -p $NAME/core
-curl 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' -o commits.json
-echo "$(grep sha commits.json | sed -n "1,1p" | cut -c 13-52)">"$NAME/core_local_ver"
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/precompiled/app.js -o $NAME/core/app.js
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/precompiled/bridge.js -o $NAME/core/bridge.js
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/ca.crt -o $NAME/core/ca.crt
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.crt -o $NAME/core/server.crt
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.key -o $NAME/core/server.key
-
 # 编译 po2lmo (如果有po2lmo可跳过)
 pushd package/luci-app-openclash/tools/po2lmo
 make && sudo make install
 popd
-
 
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
