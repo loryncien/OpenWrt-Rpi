@@ -6,8 +6,8 @@
 # Blog: https://mlapp.cn
 #===============================================
 
-[ -x /bin/bash ] && sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd
-# [ -x /usr/bin/zsh ] && sed -i "s#/bin/ash#/usr/bin/zsh#g" /etc/passwd
+[ -f '/bin/bash' ] && sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd
+# [ -f '/usr/bin/zsh' ] && sed -i "s#/bin/ash#/usr/bin/zsh#g" /etc/passwd
 
 # Set default theme to luci-theme-argon`
 uci set luci.main.lang=zh_cn
