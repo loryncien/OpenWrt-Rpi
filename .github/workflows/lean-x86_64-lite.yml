@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build-lede-x86_64-lite
+name: Build-lean-x86_64-lite
 
 on:
   workflow_dispatch:
