@@ -41,9 +41,9 @@ uci set dhcp.@dnsmasq[0].rebind_localhost='1'
 uci commit
 
 # 启动本地内核
-sed -i '/core/c src/gz openwrt_core file:///www/snapshots/targets/x86/64/packages' /etc/opkg/distfeeds.conf
+[ -d '/www/snapshots' ] && sed -i 's|core.*|core file:///www/snapshots/targets/x86/64/packages|' /etc/opkg/distfeeds.conf
 
 # sirpdboy luci-app-netdata-cn 不能启动
-[ -f /etc/init.d/netdata ] && chmod +x /etc/init.d/netdata
+[ -f '/etc/init.d/netdata' ] && chmod +x /etc/init.d/netdata
 
 exit 0
