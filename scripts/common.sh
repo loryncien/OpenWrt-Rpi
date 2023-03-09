@@ -124,12 +124,3 @@ cp -f $GITHUB_WORKSPACE/data/banner package/base-files/files/etc/banner
 
 # samba解除root限制
 sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.template
-
-# 添加poweroff按钮
-curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm
-curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
-
-# luci-app-wrtbwmon 5s to 2s
-sed -i 's#interval: 5#interval: 2#g' $(find feeds/luci -name 'wrtbwmon.js')
-sed -i 's# selected="selected"##' $(find feeds/luci -name 'wrtbwmon.htm')
-sed -i 's#"2"#& selected="selected"#' $(find feeds/luci -name 'wrtbwmon.htm')
