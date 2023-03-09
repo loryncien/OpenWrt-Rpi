@@ -16,6 +16,15 @@ curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.crt -o
 curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.key -o $NAME/core/server.key
 popd
 
+# 添加poweroff按钮
+curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm
+curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
+
+# luci-app-wrtbwmon 5s to 2s
+sed -i 's#interval: 5#interval: 2#g' $(find feeds/luci -name 'wrtbwmon.js')
+sed -i 's# selected="selected"##' $(find feeds/luci -name 'wrtbwmon.htm')
+sed -i 's#"2"#& selected="selected"#' $(find feeds/luci -name 'wrtbwmon.htm')
+
 # Modify localtime in Homepage
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/x86/index.htm
 # Shows increased compile time
