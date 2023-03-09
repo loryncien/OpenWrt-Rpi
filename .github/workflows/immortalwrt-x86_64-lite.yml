@@ -447,7 +447,7 @@ jobs:
           body: |
             - 编译时间: `${{ env.DATE }}`
             - 内核版本: `${{ env.KERNEL_VERSION }}`
-            - 默认 IP: `${{ env.DEFAULT_IP }}` 默认密码: 无
+            - 默认 IP: `${{ env.DEFAULT_IP }}` 默认密码: `passwall`
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.1
