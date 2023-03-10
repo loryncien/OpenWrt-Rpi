@@ -407,7 +407,7 @@ jobs:
           type: tar
           path: packages/
           directory: ${{ env.UPLOAD_PATH }}/
-          filename: ${{ env.UPLOAD_PATH }}/OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-kernel-packages.tar.gz
+          filename: ${{ env.UPLOAD_PATH }}/immortalwrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-kernel-packages.tar.gz
           
       - name: Compressed firmware packages
         uses: thedoctor0/zip-release@master
@@ -416,7 +416,7 @@ jobs:
           type: tar
           path: packages/
           directory: ${{ env.PACKAGES_PATH }}/
-          filename: ${{ env.UPLOAD_PATH }}/OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-packages.tar.gz
+          filename: ${{ env.UPLOAD_PATH }}/immortalwrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-ipk.tar.gz
 
       - name: Organize files
         id: organize
@@ -448,7 +448,7 @@ jobs:
           body: |
             - 编译时间: `${{ env.DATE }}`
             - 内核版本: `${{ env.KERNEL_VERSION }}`
-            - 默认 IP: `${{ env.DEFAULT_IP }}` 用户名：`root` 密码: none
+            - 默认 IP: `${{ env.DEFAULT_IP }}` 用户名：`root` 密码: 无
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.1
