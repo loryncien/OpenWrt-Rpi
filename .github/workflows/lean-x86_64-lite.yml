@@ -415,7 +415,7 @@ jobs:
           type: tar
           path: packages/
           directory: ${{ env.PACKAGES_PATH }}/
-          filename: ${{ env.UPLOAD_PATH }}/OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-packages.tar.gz
+          filename: ${{ env.UPLOAD_PATH }}/OpenWrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-ipk.tar.gz
 
       - name: Organize files
         id: organize
