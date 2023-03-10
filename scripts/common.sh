@@ -107,6 +107,9 @@ pushd package/luci-app-openclash/tools/po2lmo
 make && sudo make install
 popd
 
+# 修改插件名字
+sed -i 's/"解除网易云音乐播放限制"/"网易云音乐解锁"/g' `grep "解除网易云音乐播放限制" -rl ./`
+
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
 # Rename hostname to OpenWrt
