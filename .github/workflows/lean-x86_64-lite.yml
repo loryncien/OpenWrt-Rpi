@@ -440,14 +440,14 @@ jobs:
           name: openwrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-lite
           allowUpdates: true
           replacesArtifacts: true
-          tag: ${{ env.SDATE }}
+          tag: lean-${{ env.SDATE }}
           commit: ${{ env.CURRENT_BRANCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: ${{ env.OPENWRT_ROOT_PATH }}/bin/targets/${{ env.DEVICE_TARGET }}/${{ env.DEVICE_SUBTARGET }}/*
           body: |
             - 编译时间: `${{ env.DATE }}`
             - 内核版本: `${{ env.KERNEL_VERSION }}`
-            - 默认 IP: `${{ env.DEFAULT_IP }}` 默认密码: 无
+            - 默认 IP: `${{ env.DEFAULT_IP }}` 用户名: `root` 密码: 无
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.1
