@@ -41,6 +41,7 @@ git clone --depth=1 https://github.com/sbwml/v2ray-geodata.git v2ray-geodata
 #find .. -maxdepth 4 -iname "*netdata" -type d | xargs rm -rf
 rm -rf ../feeds/luci/applications/luci-app-netdata
 git clone --depth=1 https://github.com/sirpdboy/luci-app-netdata
+ln -s luci-app-netdata/po/zh-cn luci-app-netdata/po/zh_Hans
 
 # luci-app-ddns-go
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go.git
