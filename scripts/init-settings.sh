@@ -29,6 +29,7 @@ uci set fstab.@global[0].check_fs=1
 uci -q delete dhcp.lan.ra
 uci -q delete dhcp.lan.ra_management
 uci -q delete dhcp.lan.dhcpv6
+uci -q delete dhcp.lan.ndp
 # Disable IPV6 ula prefix
 uci -q delete network.globals.ula_prefix
 uci -q delete network.wan6
