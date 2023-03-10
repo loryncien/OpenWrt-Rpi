@@ -357,6 +357,7 @@ jobs:
           make json_overview_image_info
           make checksum
           echo "DATE=$(date +"%Y.%m.%d %H:%M")" >> $GITHUB_ENV
+          echo "SDATE=$(date +"%Y%m%d")" >> $GITHUB_ENV
 
       - name: Print Sha256sums
         run: |
@@ -439,7 +440,7 @@ jobs:
           name: openwrt-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-lite
           allowUpdates: true
           replacesArtifacts: true
-          tag: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+          tag: ${{ env.SDATE }}
           commit: ${{ env.CURRENT_BRANCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: ${{ env.OPENWRT_ROOT_PATH }}/bin/targets/${{ env.DEVICE_TARGET }}/${{ env.DEVICE_SUBTARGET }}/*
@@ -452,7 +453,7 @@ jobs:
         uses: dev-drprasad/delete-older-releases@v0.2.1
         if: env.FIRMWARE_RELEASE_UPLOAD == 'true' && !cancelled()
         with:
-          keep_latest: 10
+          keep_latest: 5
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
